@@ -1,6 +1,6 @@
 @AbapCatalog.sqlViewName: 'ZV_TRAVL'
 @AbapCatalog.compiler.compareFilter: true
-@AbapCatalog.preserveKey: true
+//@AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Interface Travel'
 define root view ZCDS_I_TRAVEL_RESTALVAN

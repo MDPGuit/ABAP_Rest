@@ -17,9 +17,9 @@ CLASS zcl_insert_data_log_restalvan IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-    DATA: lt_travel   TYPE TABLE OF ztravl_restalvan,
-          lt_booking  TYPE TABLE OF zbook_restalvan,
-          lt_book_sup TYPE TABLE OF zbsupp_restalvan.
+    DATA: lt_travel   TYPE TABLE OF zrap_travl_alvan,
+          lt_booking  TYPE TABLE OF zrap_book_alvan,
+          lt_book_sup TYPE TABLE OF zrap_bsupp_alvan.
 
     SELECT travel_id,
             agency_id,
@@ -54,18 +54,18 @@ CLASS zcl_insert_data_log_restalvan IMPLEMENTATION.
         AND booking_id EQ @lt_booking-booking_id
         INTO CORRESPONDING FIELDS OF TABLE @lt_book_sup.
 
-    DELETE FROM: ztravl_restalvan,
-                 zbook_restalvan,
-                 zbsupp_restalvan.
+    DELETE FROM: zrap_travl_alvan,
+                 zrap_book_alvan,
+                 zrap_bsupp_alvan.
 
 **                 ML-0030
     LOOP AT lt_book_sup ASSIGNING FIELD-SYMBOL(<fs>).
       <fs>-suplement_id = 'ML-0030'.
     ENDLOOP.
 
-    INSERT: ztravl_restalvan FROM TABLE @lt_travel,
-            zbook_restalvan FROM TABLE @lt_booking,
-            zbsupp_restalvan FROM TABLE @lt_book_sup.
+    INSERT: zrap_travl_alvan FROM TABLE @lt_travel,
+            zrap_book_alvan FROM TABLE @lt_booking,
+            zrap_bsupp_alvan FROM TABLE @lt_book_sup.
 
     out->write( 'DONE!' ).
 

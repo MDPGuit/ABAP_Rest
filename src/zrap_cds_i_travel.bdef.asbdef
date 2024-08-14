@@ -1,0 +1,41 @@
+managed; //implementation in class zbp_rap_cds_i_travel unique;
+//strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+
+define behavior for ZRAP_CDS_I_TRAVEL //alias <alias_name>
+persistent table zrap_travl_alvan
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) travel_id;
+  association _Booking { create; }
+}
+
+define behavior for ZRAP_CDS_I_BOOKING //alias <alias_name>
+persistent table zrap_book_alvan
+lock dependent by _Travel
+authorization dependent by _Travel
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) travel_id, booking_id;
+  association _Travel;
+  association _BookingSupplement { create; }
+}
+
+define behavior for ZRAP_CDS_I_BOOKSUP //alias <alias_name>
+with unmanaged save
+lock dependent by _Travel
+authorization dependent by _Travel
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) travel_id, booking_id, booking_supplement_id;
+  association _Travel;
+  association _Booking;
+}

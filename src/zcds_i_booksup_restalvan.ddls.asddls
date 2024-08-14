@@ -1,6 +1,6 @@
 @AbapCatalog.sqlViewName: 'ZV_BOOK_SUPL'
 @AbapCatalog.compiler.compareFilter: true
-@AbapCatalog.preserveKey: true
+//@AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Interface Booking Supplement'
 define view ZCDS_I_BOOKSUP_RESTALVAN
