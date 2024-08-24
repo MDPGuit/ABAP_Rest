@@ -1,41 +1,98 @@
-managed; //implementation in class zbp_rap_cds_i_travel unique;
+managed;
 //strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
 
-define behavior for ZRAP_CDS_I_TRAVEL //alias <alias_name>
+define behavior for ZRAP_CDS_I_TRAVEL alias Travel
+implementation in class zbp_rap_cds_i_travel unique
 persistent table zrap_travl_alvan
 lock master
 authorization master ( instance )
-//etag master <field_name>
+etag master last_changed_at
 {
+  field ( readonly ) last_changed_at, last_changed_by, created_at, created_by;
+  field ( mandatory ) agency_id, overall_status, booking_fee, currency_code;
+
+  //Dynamic Filed Control
+  field ( features : instance ) travel_id;
+  //field ( numbering : managed ) travel_id; ABP_BEHV_PID
+
   create;
   update;
   delete;
-  field ( readonly ) travel_id;
+
+  validation validateCustomer on save
+  {
+    field customer_id;
+  }
+
+  validation validateDates on save
+  {
+    field begin_date, end_date;
+  }
+
+  validation validateStatus on save
+  {
+    field overall_status;
+  }
+
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+
+  action createTravelByTemplate result [1] $self;
+
   association _Booking { create; }
+
+  mapping for zrap_travl_alvan corresponding;
+
 }
 
-define behavior for ZRAP_CDS_I_BOOKING //alias <alias_name>
+define behavior for ZRAP_CDS_I_BOOKING alias Booking
+implementation in class zbp_rap_cds_i_booking unique
 persistent table zrap_book_alvan
 lock dependent by _Travel
 authorization dependent by _Travel
-//etag master <field_name>
+etag master last_change_at
 {
   update;
   delete;
-  field ( readonly ) travel_id, booking_id;
+
+  field ( readonly ) travel_id;
+  field ( mandatory ) carrier_id, connection_id, flight_date, booking_status;
+
+  validation validateStatus on save
+  {
+    field booking_status;
+  }
+
+  determination calculateTotalFlightPrice on modify {
+    field flight_price, currency_code;
+  }
+
   association _Travel;
   association _BookingSupplement { create; }
+
+  mapping for zrap_book_alvan corresponding;
 }
 
-define behavior for ZRAP_CDS_I_BOOKSUP //alias <alias_name>
+define behavior for ZRAP_CDS_I_BOOKSUP alias Supplement
+implementation in class zbp_rap_cds_i_booksup unique
 with unmanaged save
 lock dependent by _Travel
 authorization dependent by _Travel
-//etag master <field_name>
+etag master last_changed_at
 {
   update;
   delete;
-  field ( readonly ) travel_id, booking_id, booking_supplement_id;
+
+  field ( readonly ) travel_id, booking_id;
+  field ( mandatory ) booking_supplement_id, price;
+
+
+  determination calculateTotalSupplPrice on modify {
+    field price, currency_code;
+  }
+
   association _Travel;
   association _Booking;
+
+  mapping for zrap_log_alvan corresponding;
 }

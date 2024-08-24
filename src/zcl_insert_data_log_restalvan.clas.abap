@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_insert_data_log_restalvan IMPLEMENTATION.
+CLASS ZCL_INSERT_DATA_LOG_RESTALVAN IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
