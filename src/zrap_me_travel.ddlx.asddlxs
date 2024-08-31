@@ -141,7 +141,7 @@ annotate entity ZRAP_CDS_C_TRAVEL with
       },
       { type: #FOR_ACTION,
         dataAction: 'createTravelByTemplate',
-        label : 'Create Travel'
+        label : 'Create Travel By Template'
       }],
      identification: [{
         position: 90,

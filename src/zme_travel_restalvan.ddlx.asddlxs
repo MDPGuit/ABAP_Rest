@@ -144,7 +144,7 @@ annotate entity ZCDS_C_TRAVEL_RESTALVAN with
       },
       { type: #FOR_ACTION,
         dataAction: 'createTravelByTemplate',
-        label : 'Create Travel'
+        label : 'Create Travel By Template'
       }],
      identification: [{
         position: 90,
